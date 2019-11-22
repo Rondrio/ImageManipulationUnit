@@ -35,11 +35,11 @@ func (image *Image) Mirror() error {
 	if img, ok := image.Image.(SetColor); ok {
 		for height := 0; height < len(buffer); height++ {
 			for width := 0; width < len(buffer[height]); width++ {
-				img.Set(width,height,buffer[height][width])
+				img.Set(width, height, buffer[height][width])
 			}
 		}
-	}else {
+		return nil
+	} else {
 		return errors.New("image unchangeable")
 	}
-	return nil
 }
