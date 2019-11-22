@@ -14,13 +14,13 @@ func (list *ImageList) Invert(flags Flags.Flags) error {
 		return errors.New("unset flags")
 	}
 	image := list.GetImageByAlias(alias)
-	if err := image.InvertColor();err != nil{
+	if err := image.InvertColor(); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (image *Image) InvertColor() error{
+func (image *Image) InvertColor() error {
 	paint := func(width, height int, img SetColor) {
 		oldR, oldG, oldB, oldA := image.Image.At(width, height).RGBA()
 		c := color.Color(color.RGBA64{

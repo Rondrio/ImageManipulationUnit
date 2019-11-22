@@ -36,27 +36,31 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList) {
 
 	switch strings.ToLower(words[0]) {
 	case "load":
-		if err := list.LoadImage(flags);err != nil{
+		if err := list.LoadImage(flags); err != nil {
 			log.Println(err)
 		}
 	case "export":
-		if err := list.ExportImage(flags);err != nil{
+		if err := list.ExportImage(flags); err != nil {
 			log.Println(err)
 		}
 	case "grayscale":
-		if err := list.Grayscale(flags);err != nil{
+		if err := list.Grayscale(flags); err != nil {
 			log.Println(err)
 		}
 	case "add":
-		if err := list.AddColor(flags);err != nil{
+		if err := list.AddColor(flags); err != nil {
 			log.Println(err)
 		}
 	case "invert":
-		if err := list.Invert(flags);err != nil{
+		if err := list.Invert(flags); err != nil {
 			log.Println(err)
 		}
 	case "set":
-		if err := list.SetColor(flags);err != nil{
+		if err := list.SetColor(flags); err != nil {
+			log.Println(err)
+		}
+	case "mirror":
+		if err := list.MirrorImage(flags); err != nil {
 			log.Println(err)
 		}
 	default:
@@ -65,8 +69,8 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList) {
 
 }
 
-func recovery(){
-	if err := recover();err != nil{
+func recovery() {
+	if err := recover(); err != nil {
 		log.Println("error with flags")
 	}
 }

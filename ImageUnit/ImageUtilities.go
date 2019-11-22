@@ -33,7 +33,7 @@ func (list *ImageList) GetImageByAlias(alias string) *Image {
 	return nil
 }
 
-func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor))error {
+func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor)) error {
 	if img, ok := image.Image.(SetColor); ok {
 		for height := 0; height < image.Image.Bounds().Max.Y; height++ {
 			for width := 0; width < image.Image.Bounds().Max.X; width++ {
@@ -41,7 +41,7 @@ func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor
 			}
 		}
 		return nil
-	}else {
-		return errors.New("could not amplify image")
+	} else {
+		return errors.New("image unchangeable")
 	}
 }

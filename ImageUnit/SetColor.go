@@ -43,13 +43,13 @@ func (list *ImageList) SetColor(flags Flags.Flags) error {
 
 	image := list.GetImageByAlias(alias)
 
-	if err := image.SetColor(uint32(red), uint32(green), uint32(blue), uint32(alpha));err != nil{
+	if err := image.SetColor(uint32(red), uint32(green), uint32(blue), uint32(alpha)); err != nil {
 		return err
 	}
 	return nil
 
 }
-func (image *Image) SetColor(r, g, b, a uint32)error {
+func (image *Image) SetColor(r, g, b, a uint32) error {
 	paint := func(width, height int, img SetColor) {
 		c := color.Color(color.RGBA64{
 			R: uint16(r),
