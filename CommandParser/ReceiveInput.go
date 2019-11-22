@@ -63,11 +63,6 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList) {
 		if err != nil {
 			log.Println(err)
 		}
-	case "select":
-		err := list.SetColor(flags)
-		if err != nil {
-			return err
-		}
 	}
 
 }
