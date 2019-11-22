@@ -38,13 +38,15 @@ func (list *ImageList) AddColor(flags Flags.Flags) error {
 		return errors.New("no rgb values set")
 	}
 	image := list.GetImageByAlias(alias)
-	image.ChangeColor(uint32(red), uint32(green), uint32(blue), uint32(alpha))
-
+	err = image.ChangeColor(uint32(red), uint32(green), uint32(blue), uint32(alpha))
+	if err != nil{
+		return err
+	}
 	return nil
 
 }
 
-func (image *Image) ChangeColor(r, g, b, a uint32) {
+func (image *Image) ChangeColor(r, g, b, a uint32)error {
 	paint := func(width, height int, img SetColor) {
 		oldR, oldG, oldB, oldA := image.Image.At(width, height).RGBA()
 		c := color.Color(color.RGBA64{
@@ -55,5 +57,5 @@ func (image *Image) ChangeColor(r, g, b, a uint32) {
 		})
 		img.Set(width, height, c)
 	}
-	image.IterateOverPixels(paint)
+	return image.IterateOverPixels(paint)
 }
