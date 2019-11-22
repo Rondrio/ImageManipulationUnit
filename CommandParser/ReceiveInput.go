@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func ScanCommandLine(list *ImageUnit.ImageList) {
+func ScanCommandLine(list *ImageUnit.ImageList,selection *ImageUnit.Selection) {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		cmd, err := reader.ReadString('\n')
@@ -18,11 +18,11 @@ func ScanCommandLine(list *ImageUnit.ImageList) {
 			log.Println(err)
 		}
 		cmd = strings.Replace(cmd, "\r\n", "", -1)
-		ParseCommand(cmd, list)
+		ParseCommand(cmd, list,selection)
 	}
 }
 
-func ParseCommand(cmd string, list *ImageUnit.ImageList) {
+func ParseCommand(cmd string, list *ImageUnit.ImageList,selection *ImageUnit.Selection) {
 	var flags Flags.Flags
 	defer recovery()
 	flags.Flag = make(map[string]string)
@@ -61,6 +61,10 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList) {
 		}
 	case "mirror":
 		if err := list.MirrorImage(flags); err != nil {
+			log.Println(err)
+		}
+	case "select":
+		if err := selection.Select(flags);err != nil{
 			log.Println(err)
 		}
 	default:

@@ -15,11 +15,13 @@ type Image struct {
 type ImageList struct {
 	LoadedImages []Image
 }
-type Point struct {
+type Selection struct{
+	Points []Point
+}
+type Point struct{
 	X int
 	Y int
 }
-
 type SetColor interface {
 	Set(x, y int, c color.Color)
 }
