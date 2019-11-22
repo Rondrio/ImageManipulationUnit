@@ -14,8 +14,7 @@ func (list *ImageList) Invert(flags Flags.Flags) error {
 		return errors.New("unset flags")
 	}
 	image := list.GetImageByAlias(alias)
-	err := image.InvertColor()
-	if err != nil{
+	if err := image.InvertColor();err != nil{
 		return err
 	}
 	return nil

@@ -14,8 +14,7 @@ func (list *ImageList) Grayscale(flags Flags.Flags) error {
 		return errors.New("unset flags")
 	}
 	image := list.GetImageByAlias(alias)
-	err := image.ChangeToGrayscale()
-	if err != nil{
+	if err := image.ChangeToGrayscale();err != nil{
 		return err
 	}
 	return nil
