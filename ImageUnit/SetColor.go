@@ -11,8 +11,10 @@ func (list *ImageList) SetColor(flags Flags.Flags) error {
 	var alias string
 	var red, green, blue, alpha int
 	var err error
+
 	if flags.CheckIfFlagsAreSet("alias") {
 		alias = flags.Flag["alias"]
+
 		red, err = strconv.Atoi(flags.Flag["red"])
 		if err != nil {
 			return err
@@ -38,13 +40,16 @@ func (list *ImageList) SetColor(flags Flags.Flags) error {
 	if red == 0 && green == 0 && blue == 0 && alpha == 0 {
 		return errors.New("no rgb values set")
 	}
-	image := list.GetImageByAlias(alias)
-	image.SetColor(uint32(red), uint32(green), uint32(blue), uint32(alpha))
 
+	image := list.GetImageByAlias(alias)
+
+	if err := image.SetColor(uint32(red), uint32(green), uint32(blue), uint32(alpha)); err != nil {
+		return err
+	}
 	return nil
 
 }
-func (image *Image) SetColor(r, g, b, a uint32) {
+func (image *Image) SetColor(r, g, b, a uint32) error {
 	paint := func(width, height int, img SetColor) {
 		c := color.Color(color.RGBA64{
 			R: uint16(r),
@@ -54,5 +59,5 @@ func (image *Image) SetColor(r, g, b, a uint32) {
 		})
 		img.Set(width, height, c)
 	}
-	image.IterateOverPixels(paint)
+	return image.IterateOverPixels(paint)
 }

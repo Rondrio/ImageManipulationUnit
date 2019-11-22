@@ -26,8 +26,7 @@ func (list *ImageList) ExportImage(flags Flags.Flags) error {
 	}
 	defer file.Close()
 
-	err = image.EncodeImage(file)
-	if err != nil {
+	if err = image.EncodeImage(file); err != nil {
 		return err
 	}
 	return nil
