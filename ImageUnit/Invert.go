@@ -6,7 +6,7 @@ import (
 	"image/color"
 )
 
-func (list *ImageList) Invert(flags Flags.Flags) error {
+func (list *ImageList) Invert(flags Flags.Flags, selection *Selection) error {
 	var alias string
 	if flags.CheckIfFlagsAreSet("alias") {
 		alias = flags.Flag["alias"]
@@ -14,13 +14,13 @@ func (list *ImageList) Invert(flags Flags.Flags) error {
 		return errors.New("unset flags")
 	}
 	image := list.GetImageByAlias(alias)
-	if err := image.InvertColor(); err != nil {
+	if err := image.InvertColor(selection); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (image *Image) InvertColor() error {
+func (image *Image) InvertColor(selection *Selection) error {
 	paint := func(width, height int, img SetColor) {
 		oldR, oldG, oldB, oldA := image.Image.At(width, height).RGBA()
 		c := color.Color(color.RGBA64{
@@ -31,7 +31,7 @@ func (image *Image) InvertColor() error {
 		})
 		img.Set(width, height, c)
 	}
-	return image.IterateOverPixels(paint)
+	return image.IterateOverPixels(paint, selection)
 }
 func getInvertedValue(value uint16) uint16 {
 	return 65535 - value
