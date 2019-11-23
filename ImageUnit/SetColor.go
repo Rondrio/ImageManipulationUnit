@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func (list *ImageList) SetColor(flags Flags.Flags) error {
+func (list *ImageList) SetColor(flags Flags.Flags, selection *Selection) error {
 	var alias string
 	var red, green, blue, alpha int
 	var err error
@@ -43,13 +43,13 @@ func (list *ImageList) SetColor(flags Flags.Flags) error {
 
 	image := list.GetImageByAlias(alias)
 
-	if err := image.SetColor(uint32(red), uint32(green), uint32(blue), uint32(alpha)); err != nil {
+	if err := image.SetColor(uint32(red), uint32(green), uint32(blue), uint32(alpha), selection); err != nil {
 		return err
 	}
 	return nil
 
 }
-func (image *Image) SetColor(r, g, b, a uint32) error {
+func (image *Image) SetColor(r, g, b, a uint32, selection *Selection) error {
 	paint := func(width, height int, img SetColor) {
 		c := color.Color(color.RGBA64{
 			R: uint16(r),
@@ -59,5 +59,5 @@ func (image *Image) SetColor(r, g, b, a uint32) error {
 		})
 		img.Set(width, height, c)
 	}
-	return image.IterateOverPixels(paint)
+	return image.IterateOverPixels(paint, selection)
 }

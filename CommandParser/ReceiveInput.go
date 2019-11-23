@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func ScanCommandLine(list *ImageUnit.ImageList,selection *ImageUnit.Selection) {
+func ScanCommandLine(list *ImageUnit.ImageList, selection *ImageUnit.Selection) {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		cmd, err := reader.ReadString('\n')
@@ -18,11 +18,11 @@ func ScanCommandLine(list *ImageUnit.ImageList,selection *ImageUnit.Selection) {
 			log.Println(err)
 		}
 		cmd = strings.Replace(cmd, "\r\n", "", -1)
-		ParseCommand(cmd, list,selection)
+		ParseCommand(cmd, list, selection)
 	}
 }
 
-func ParseCommand(cmd string, list *ImageUnit.ImageList,selection *ImageUnit.Selection) {
+func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Selection) {
 	var flags Flags.Flags
 	defer recovery()
 	flags.Flag = make(map[string]string)
@@ -44,19 +44,19 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList,selection *ImageUnit.Sel
 			log.Println(err)
 		}
 	case "grayscale":
-		if err := list.Grayscale(flags); err != nil {
+		if err := list.Grayscale(flags, selection); err != nil {
 			log.Println(err)
 		}
 	case "add":
-		if err := list.AddColor(flags); err != nil {
+		if err := list.AddColor(flags, selection); err != nil {
 			log.Println(err)
 		}
 	case "invert":
-		if err := list.Invert(flags); err != nil {
+		if err := list.Invert(flags, selection); err != nil {
 			log.Println(err)
 		}
 	case "set":
-		if err := list.SetColor(flags); err != nil {
+		if err := list.SetColor(flags, selection); err != nil {
 			log.Println(err)
 		}
 	case "mirror":
@@ -64,7 +64,7 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList,selection *ImageUnit.Sel
 			log.Println(err)
 		}
 	case "select":
-		if err := selection.Select(flags);err != nil{
+		if err := selection.Select(flags); err != nil {
 			log.Println(err)
 		}
 	default:
@@ -75,6 +75,6 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList,selection *ImageUnit.Sel
 
 func recovery() {
 	if err := recover(); err != nil {
-		log.Println("error with flags")
+		log.Println("error with flags",err)
 	}
 }
