@@ -39,11 +39,11 @@ func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor
 	if img, ok := image.Image.(SetColor); ok {
 		for height := 0; height < image.Image.Bounds().Max.Y; height++ {
 			for width := 0; width < image.Image.Bounds().Max.X; width++ {
-				if len(selection.Points)>2{
-				if selected := selection.CheckIfSelected(Point{width, height}); selected {
-					paint(width, height, img)
-				}
-				}else{
+				if len(selection.Points) > 2 {
+					if selected := selection.CheckIfSelected(Point{width, height}); selected {
+						paint(width, height, img)
+					}
+				} else {
 					paint(width, height, img)
 				}
 			}

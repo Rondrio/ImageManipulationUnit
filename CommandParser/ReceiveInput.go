@@ -67,8 +67,16 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 		if err := selection.Select(flags); err != nil {
 			log.Println(err)
 		}
+	case "merge":
+		if err := list.Merge(flags); err != nil {
+			log.Println(err)
+		}
+	case "overlay":
+		if err := list.Overlay(flags); err != nil {
+			log.Println(err)
+		}
 	case "unselect":
-		selection.Points = make([]ImageUnit.Point,0)
+		selection.Points = make([]ImageUnit.Point, 0)
 	default:
 		fmt.Println("Command not recognized")
 	}
