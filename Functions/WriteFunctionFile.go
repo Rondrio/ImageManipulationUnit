@@ -1,0 +1,5 @@
+package Functions
+
+func WriteFunctionFile(){
+
+}

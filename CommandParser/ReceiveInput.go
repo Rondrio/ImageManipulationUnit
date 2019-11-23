@@ -2,27 +2,27 @@ package CommandParser
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/Functions"
 	"ImageManipulationUnit/ImageUnit"
 	"bufio"
-	"fmt"
+	"io"
 	"log"
-	"os"
 	"strings"
 )
 
-func ScanCommandLine(list *ImageUnit.ImageList, selection *ImageUnit.Selection) {
-	reader := bufio.NewReader(os.Stdin)
+func ScanInput(list *ImageUnit.ImageList, selection *ImageUnit.Selection,functions *Functions.FunctionList, input io.Reader) {
+	reader := bufio.NewReader(input)
 	for {
 		cmd, err := reader.ReadString('\n')
 		if err != nil {
 			log.Println(err)
 		}
 		cmd = strings.Replace(cmd, "\r\n", "", -1)
-		ParseCommand(cmd, list, selection)
+		ParseCommand(cmd, list, selection,functions)
 	}
 }
 
-func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Selection) {
+func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Selection, functions *Functions.FunctionList) {
 	var flags Flags.Flags
 	defer recovery()
 	flags.Flag = make(map[string]string)
@@ -34,7 +34,7 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 		}
 	}
 
-	switch strings.ToLower(words[0]) {
+	switch keyWord := strings.ToLower(words[0]); keyWord {
 	case "load":
 		if err := list.LoadImage(flags); err != nil {
 			log.Println(err)
@@ -78,7 +78,12 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 	case "unselect":
 		selection.Points = make([]ImageUnit.Point, 0)
 	default:
-		fmt.Println("Command not recognized")
+		function := functions.GetFunctionByKeyWord(keyWord)
+		function.ExecuteFunction(list,selection,functions)
+
+
+
+		//fmt.Println("Command not recognized")
 	}
 
 }
