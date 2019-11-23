@@ -31,10 +31,8 @@ func (selection *Selection) Select(flags Flags.Flags) error {
 		if err != nil{
 			return err
 		}
-
 		selection.Points[i-1] = Point{xCoord,yCoord}
 	}
-
 
 	fmt.Println("Currently selected :",selection.Points)
 	return nil

@@ -68,7 +68,7 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 			log.Println(err)
 		}
 	case "unselect":
-		selection = &ImageUnit.Selection{}
+		selection.Points = make([]ImageUnit.Point,0)
 	default:
 		fmt.Println("Command not recognized")
 	}
