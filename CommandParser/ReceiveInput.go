@@ -67,6 +67,8 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 		if err := selection.Select(flags); err != nil {
 			log.Println(err)
 		}
+	case "unselect":
+		selection = &ImageUnit.Selection{}
 	default:
 		fmt.Println("Command not recognized")
 	}
@@ -75,6 +77,6 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 
 func recovery() {
 	if err := recover(); err != nil {
-		log.Println("error with flags",err)
+		log.Println("error with flags", err)
 	}
 }
