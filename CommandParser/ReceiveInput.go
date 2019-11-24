@@ -76,6 +76,10 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 		if err := list.Overlay(flags); err != nil {
 			log.Println(err)
 		}
+	case "unload":
+		if err := list.Unload(flags); err != nil {
+			log.Println(err)
+		}
 	case "unselect":
 		selection.Points = make([]ImageUnit.Point, 0)
 	default:

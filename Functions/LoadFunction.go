@@ -14,9 +14,9 @@ func (List *FunctionList) CheckForFunctionFile(keyWord string) (*Function, error
 	}
 	for _, info := range FunctionDirInfo {
 		if strings.TrimSuffix(info.Name(), ".rondrio") == keyWord {
-			currentPath,err := os.Getwd()
-			if err != nil{
-				return nil,err
+			currentPath, err := os.Getwd()
+			if err != nil {
+				return nil, err
 			}
 			file, err := os.Open(currentPath + "\\Functions\\" + info.Name())
 			if err != nil {

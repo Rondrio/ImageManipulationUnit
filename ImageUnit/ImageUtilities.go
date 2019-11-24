@@ -1,6 +1,7 @@
 package ImageUnit
 
 import (
+	"ImageManipulationUnit/CommandParser/Flags"
 	"errors"
 	"image"
 	"image/color"
@@ -52,4 +53,18 @@ func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor
 	} else {
 		return errors.New("image unchangeable")
 	}
+}
+
+func (list *ImageList) Unload(flags Flags.Flags) error {
+	if set := flags.CheckIfFlagsAreSet("alias"); set {
+		return errors.New("wanted flags unset")
+	}
+	alias := flags.Flag["alias"]
+
+	for index := range list.LoadedImages{
+		if list.LoadedImages[index].Alias == alias{
+			list.LoadedImages = append(list.LoadedImages[:index],list.LoadedImages[index+1:]...)
+		}
+	}
+	return nil
 }

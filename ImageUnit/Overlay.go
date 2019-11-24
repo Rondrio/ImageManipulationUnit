@@ -8,11 +8,11 @@ import (
 )
 
 func (list *ImageList) Overlay(flags Flags.Flags) error {
-	var alias1, alias2 string
-	if flags.CheckIfFlagsAreSet("alias1", "alias2") {
-		alias1 = flags.Flag["alias1"]
-		alias2 = flags.Flag["alias2"]
+	if set := flags.CheckIfFlagsAreSet("alias1", "alias2"); !set {
+		return Flags.ErrUnsetFlags
 	}
+	alias2 := flags.Flag["alias2"]
+	alias1 := flags.Flag["alias1"]
 	image1 := list.GetImageByAlias(alias1)
 	image2 := list.GetImageByAlias(alias2)
 

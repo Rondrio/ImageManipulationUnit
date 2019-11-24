@@ -7,12 +7,10 @@ import (
 )
 
 func (list *ImageList) MirrorImage(flags Flags.Flags) error {
-	var alias string
-	if flags.CheckIfFlagsAreSet("alias") {
-		alias = flags.Flag["alias"]
-	} else {
-		return errors.New("unset flags")
+	if set := flags.CheckIfFlagsAreSet("alias"); !set {
+		return Flags.ErrUnsetFlags
 	}
+	alias := flags.Flag["alias"]
 	image := list.GetImageByAlias(alias)
 	if err := image.Mirror(); err != nil {
 		return err

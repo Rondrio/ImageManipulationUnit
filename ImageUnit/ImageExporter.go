@@ -10,13 +10,11 @@ import (
 )
 
 func (list *ImageList) ExportImage(flags Flags.Flags) error {
-	var output, alias string
-	if flags.CheckIfFlagsAreSet("output", "alias") {
-		alias = flags.Flag["alias"]
-		output = flags.Flag["output"]
-	} else {
-		return errors.New("unset flags")
+	if set := flags.CheckIfFlagsAreSet("output", "alias"); !set {
+		return Flags.ErrUnsetFlags
 	}
+	output := flags.Flag["output"]
+	alias := flags.Flag["alias"]
 
 	image := list.GetImageByAlias(alias)
 

@@ -8,32 +8,27 @@ import (
 )
 
 func (list *ImageList) AddColor(flags Flags.Flags, selection *Selection) error {
-	var alias string
-	var red, green, blue, alpha int
-	var err error
-	if flags.CheckIfFlagsAreSet("alias") {
-		alias = flags.Flag["alias"]
-		red, err = strconv.Atoi(flags.Flag["red"])
-		if err != nil {
-			return err
-		}
-
-		green, err = strconv.Atoi(flags.Flag["green"])
-		if err != nil {
-			return err
-		}
-		blue, err = strconv.Atoi(flags.Flag["blue"])
-		if err != nil {
-			return err
-		}
-
-		alpha, err = strconv.Atoi(flags.Flag["alpha"])
-		if err != nil {
-			return err
-		}
-	} else {
-		return errors.New("unset flags")
+	if set := flags.CheckIfFlagsAreSet("alias", "red", "green", "blue", "alpha"); !set {
+		return Flags.ErrUnsetFlags
 	}
+	alias := flags.Flag["alias"]
+	red, err := strconv.Atoi(flags.Flag["red"])
+	if err != nil {
+		return err
+	}
+	green, err := strconv.Atoi(flags.Flag["green"])
+	if err != nil {
+		return err
+	}
+	blue, err := strconv.Atoi(flags.Flag["blue"])
+	if err != nil {
+		return err
+	}
+	alpha, err := strconv.Atoi(flags.Flag["alpha"])
+	if err != nil {
+		return err
+	}
+
 	if red == 0 && green == 0 && blue == 0 && alpha == 0 {
 		return errors.New("no rgb values set")
 	}
