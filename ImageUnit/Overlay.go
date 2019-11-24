@@ -16,8 +16,8 @@ func (list *ImageList) Overlay(flags Flags.Flags) error {
 	image1 := list.GetImageByAlias(alias1)
 	image2 := list.GetImageByAlias(alias2)
 
-	result,err := image1.OverlayImages(image2)
-	if err != nil{
+	result, err := image1.OverlayImages(image2)
+	if err != nil {
 		return err
 	}
 	list.LoadedImages = append(list.LoadedImages, Image{
@@ -31,7 +31,7 @@ func (list *ImageList) Overlay(flags Flags.Flags) error {
 	return nil
 }
 
-func (image1 *Image) OverlayImages(image2 *Image) (image.Image,error) {
+func (image1 *Image) OverlayImages(image2 *Image) (image.Image, error) {
 	maxX := image1.Image.Bounds().Max.X
 	if image2.Image.Bounds().Max.X > image1.Image.Bounds().Max.X {
 		maxX = image2.Image.Bounds().Max.X
@@ -43,16 +43,16 @@ func (image1 *Image) OverlayImages(image2 *Image) (image.Image,error) {
 	rect := image.Rect(0, 0, maxX, maxY)
 	result := image.NewRGBA64(rect)
 
-	paint := func(height,width int, img SetColor){
+	paint := func(height, width int, img SetColor) {
 		color1 := image1.Image.At(width, height)
 		color2 := image2.Image.At(width, height)
 
 		result.Set(width, height, mixColors(color1, color2))
 	}
 
-	err := image1.IterateOverPixels(paint,nil)
+	err := image1.IterateOverPixels(paint, nil)
 
-	return result,err
+	return result, err
 }
 
 func mixColors(color1, color2 color.Color) color.Color {

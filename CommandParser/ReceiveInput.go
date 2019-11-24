@@ -10,7 +10,8 @@ import (
 	"strings"
 )
 
-func ScanInput(list *ImageUnit.ImageList, selection *ImageUnit.Selection,functions *Functions.FunctionList, input io.Reader) {
+func ScanInput(list *ImageUnit.ImageList, selection *ImageUnit.Selection, functions *Functions.FunctionList, input io.Reader) {
+
 	reader := bufio.NewReader(input)
 	for {
 		cmd, err := reader.ReadString('\n')
@@ -18,7 +19,7 @@ func ScanInput(list *ImageUnit.ImageList, selection *ImageUnit.Selection,functio
 			log.Println(err)
 		}
 		cmd = strings.Replace(cmd, "\r\n", "", -1)
-		ParseCommand(cmd, list, selection,functions)
+		ParseCommand(cmd, list, selection, functions)
 	}
 }
 
@@ -78,12 +79,18 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 	case "unselect":
 		selection.Points = make([]ImageUnit.Point, 0)
 	default:
-		function := functions.GetFunctionByKeyWord(keyWord)
-		function.ExecuteFunction(list,selection,functions)
+		function, err := functions.GetFunctionByKeyWord(keyWord)
+		if err != nil {
+			log.Println(err)
+		}
+		commands, err := function.ExecuteFunction(list, selection, functions, flags)
+		if err != nil {
+			log.Println(err)
+		}
+		for _, command := range commands {
+			ParseCommand(command, list, selection, functions)
+		}
 
-
-
-		//fmt.Println("Command not recognized")
 	}
 
 }

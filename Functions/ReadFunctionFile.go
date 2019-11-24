@@ -1,5 +1,0 @@
-package Functions
-
-func ReadFunctionFile(){
-
-}
