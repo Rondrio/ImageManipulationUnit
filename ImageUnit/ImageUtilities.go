@@ -56,7 +56,7 @@ func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor
 }
 
 func (list *ImageList) Unload(flags Flags.Flags) error {
-	if set := flags.CheckIfFlagsAreSet("alias"); set {
+	if set := flags.CheckIfFlagsAreSet("alias"); !set {
 		return errors.New("wanted flags unset")
 	}
 	alias := flags.Flag["alias"]
