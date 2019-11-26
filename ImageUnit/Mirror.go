@@ -14,7 +14,7 @@ func (list *ImageList) MirrorImage(flags Flags.Flags) error {
 	if flags.CheckIfFlagsAreSet("alias") {
 		alias = flags.Flag["alias"]
 	}
-	if !flags.CheckIfFlagsAreSet("horizontal") {
+	if flags.CheckIfFlagsAreSet("horizontal") {
 		horizontal, err = strconv.ParseBool(flags.Flag["horizontal"])
 		if err != nil {
 			return err
