@@ -13,7 +13,7 @@ import (
 func (list *ImageList) LoadImage(flags Flags.Flags) error {
 	var image Image
 
-	if set := flags.CheckIfFlagsAreSet("alias", "path"); !set {
+	if !flags.CheckIfFlagsAreSet("alias", "path") {
 		return Flags.ErrUnsetFlags
 	}
 	alias := flags.Flag["alias"]

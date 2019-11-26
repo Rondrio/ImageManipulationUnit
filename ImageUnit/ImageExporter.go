@@ -10,7 +10,7 @@ import (
 )
 
 func (list *ImageList) ExportImage(flags Flags.Flags) error {
-	if set := flags.CheckIfFlagsAreSet("output", "alias"); !set {
+	if !flags.CheckIfFlagsAreSet("output", "alias") {
 		return Flags.ErrUnsetFlags
 	}
 	output := flags.Flag["output"]

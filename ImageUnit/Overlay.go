@@ -8,7 +8,7 @@ import (
 )
 
 func (list *ImageList) Overlay(flags Flags.Flags) error {
-	if set := flags.CheckIfFlagsAreSet("alias1", "alias2"); !set {
+	if !flags.CheckIfFlagsAreSet("alias1", "alias2") {
 		return Flags.ErrUnsetFlags
 	}
 	alias2 := flags.Flag["alias2"]

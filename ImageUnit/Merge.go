@@ -7,7 +7,7 @@ import (
 )
 
 func (list *ImageList) Merge(flags Flags.Flags) error {
-	if set := flags.CheckIfFlagsAreSet("alias1", "alias2"); !set {
+	if !flags.CheckIfFlagsAreSet("alias1", "alias2") {
 		return Flags.ErrUnsetFlags
 	}
 	alias2 := flags.Flag["alias2"]

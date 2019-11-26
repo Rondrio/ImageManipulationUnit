@@ -5,9 +5,10 @@ import "errors"
 type Flags struct {
 	Flag map[string]string
 }
+
 var ErrUnsetFlags error
 
-func init(){
+func init() {
 	ErrUnsetFlags = errors.New("unset Flags")
 }
 

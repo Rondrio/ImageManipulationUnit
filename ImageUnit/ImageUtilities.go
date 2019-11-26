@@ -61,9 +61,9 @@ func (list *ImageList) Unload(flags Flags.Flags) error {
 	}
 	alias := flags.Flag["alias"]
 
-	for index := range list.LoadedImages{
-		if list.LoadedImages[index].Alias == alias{
-			list.LoadedImages = append(list.LoadedImages[:index],list.LoadedImages[index+1:]...)
+	for index := range list.LoadedImages {
+		if list.LoadedImages[index].Alias == alias {
+			list.LoadedImages = append(list.LoadedImages[:index], list.LoadedImages[index+1:]...)
 		}
 	}
 	return nil

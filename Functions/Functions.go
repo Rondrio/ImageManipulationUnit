@@ -34,7 +34,7 @@ func (function *Function) ExecuteFunction(list *ImageUnit.ImageList, selection *
 
 	for i := 0; i < len(function.Args); i++ {
 		if flagExist := flags.CheckIfFlagsAreSet(function.Args[i]); !flagExist {
-			return nil,Flags.ErrUnsetFlags
+			return nil, Flags.ErrUnsetFlags
 		}
 		functionFlags[function.Args[i]] = flags.Flag[function.Args[i]]
 	}

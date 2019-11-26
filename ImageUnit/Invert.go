@@ -6,7 +6,7 @@ import (
 )
 
 func (list *ImageList) Invert(flags Flags.Flags, selection *Selection) error {
-	if set := flags.CheckIfFlagsAreSet("alias"); !set {
+	if !flags.CheckIfFlagsAreSet("alias") {
 		return Flags.ErrUnsetFlags
 	}
 	alias := flags.Flag["alias"]

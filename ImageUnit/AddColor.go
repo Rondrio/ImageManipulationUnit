@@ -2,35 +2,43 @@ package ImageUnit
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
-	"errors"
 	"image/color"
 	"strconv"
 )
 
 func (list *ImageList) AddColor(flags Flags.Flags, selection *Selection) error {
-	if set := flags.CheckIfFlagsAreSet("alias", "red", "green", "blue", "alpha"); !set {
+	var alias string
+	var red, green, blue, alpha int
+	var err error
+	if flags.CheckIfFlagsAreSet("alias") {
+		alias = flags.Flag["alias"]
+	}
+	if flags.CheckIfFlagsAreSet("red") {
+		red, err = strconv.Atoi(flags.Flag["red"])
+		if err != nil {
+			return err
+		}
+	}
+	if flags.CheckIfFlagsAreSet("green") {
+		green, err = strconv.Atoi(flags.Flag["green"])
+		if err != nil {
+			return err
+		}
+	}
+	if flags.CheckIfFlagsAreSet("blue") {
+		blue, err = strconv.Atoi(flags.Flag["blue"])
+		if err != nil {
+			return err
+		}
+	}
+	if flags.CheckIfFlagsAreSet("alpha") {
+		alpha, err = strconv.Atoi(flags.Flag["alpha"])
+		if err != nil {
+			return err
+		}
+	}
+	if (red == 0 && green == 0 && blue == 0 && alpha == 0) || alias == "" {
 		return Flags.ErrUnsetFlags
-	}
-	alias := flags.Flag["alias"]
-	red, err := strconv.Atoi(flags.Flag["red"])
-	if err != nil {
-		return err
-	}
-	green, err := strconv.Atoi(flags.Flag["green"])
-	if err != nil {
-		return err
-	}
-	blue, err := strconv.Atoi(flags.Flag["blue"])
-	if err != nil {
-		return err
-	}
-	alpha, err := strconv.Atoi(flags.Flag["alpha"])
-	if err != nil {
-		return err
-	}
-
-	if red == 0 && green == 0 && blue == 0 && alpha == 0 {
-		return errors.New("no rgb values set")
 	}
 	image := list.GetImageByAlias(alias)
 	if err := image.ChangeColor(uint32(red), uint32(green), uint32(blue), uint32(alpha), selection); err != nil {
