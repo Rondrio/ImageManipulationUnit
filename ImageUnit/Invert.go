@@ -30,6 +30,7 @@ func (image *Image) InvertColor(selection *Selection) error {
 	}
 	return image.IterateOverPixels(paint, selection)
 }
+
 func getInvertedValue(value uint16) uint16 {
-	return 65535 - value
+	return max16bit - value
 }

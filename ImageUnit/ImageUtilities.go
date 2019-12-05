@@ -7,6 +7,12 @@ import (
 	"image/color"
 )
 
+const (
+	max16bit = 65535
+)
+
+var ImageTunnel *Image
+
 type Image struct {
 	Id    int64
 	Alias string
