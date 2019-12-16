@@ -39,7 +39,6 @@ func (list *ImageList) LoadImage(flags Flags.Flags) error {
 	}
 	ImageTunnel = &image
 	list.LoadedImages = append(list.LoadedImages, image)
-	go StartGUI(list.GetImageByAlias(alias))
 	return nil
 }
 

@@ -2,12 +2,11 @@ package ImageUnit
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
-	"ImageManipulationUnit/ImageUnit"
 	"image/color"
 	"strconv"
 )
 
-func (list *ImageUnit.ImageList) AddColor(flags Flags.Flags, selection *ImageUnit.Selection) error {
+func (list *ImageList) SetColor(flags Flags.Flags, selection *Selection) error {
 	var alias string
 	var red, green, blue, alpha int
 	var err error
@@ -42,22 +41,22 @@ func (list *ImageUnit.ImageList) AddColor(flags Flags.Flags, selection *ImageUni
 		return Flags.ErrUnsetFlags
 	}
 	image := list.GetImageByAlias(alias)
-	if err := image.ChangeColor(uint32(red), uint32(green), uint32(blue), uint32(alpha), selection); err != nil {
+
+	if err := image.SetColor(uint32(red), uint32(green), uint32(blue), uint32(alpha), selection); err != nil {
 		return err
 	}
 	return nil
-}
 
-func (image *ImageUnit.Image) ChangeColor(r, g, b, a uint32, selection *ImageUnit.Selection) error {
-	paint := func(width, height int, img ImageUnit.SetColor) {
-		oldR, oldG, oldB, oldA := image.Image.At(width, height).RGBA()
+}
+func (imgStruct *Image) SetColor(r, g, b, a uint32, selection *Selection) error {
+	paint := func(width, height int, img SetColor) {
 		c := color.Color(color.RGBA64{
-			R: uint16(oldR - r),
-			G: uint16(oldG - g),
-			B: uint16(oldB - b),
-			A: uint16(oldA - a),
+			R: uint16(r),
+			G: uint16(g),
+			B: uint16(b),
+			A: uint16(a),
 		})
-		ImageUnit.Set(width, height, c)
+		img.Set(width, height, c)
 	}
-	return image.IterateOverPixels(paint, selection)
+	return imgStruct.IterateOverPixels(paint, selection)
 }

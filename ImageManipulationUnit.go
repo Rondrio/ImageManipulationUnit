@@ -15,5 +15,10 @@ func main() {
 	ImageList.LoadedImages = make([]ImageUnit.Image, 0)
 	FunctionList.List = make([]Functions.Function, 0)
 
-	CommandParser.ScanInput(&ImageList, &SelectionList, &FunctionList, os.Stdin)
+	var header CommandParser.Header
+	header.Selection = &SelectionList
+	header.ImageList = &ImageList
+	header.Functions = &FunctionList
+
+	CommandParser.ScanInput(header, os.Stdin)
 }

@@ -42,10 +42,10 @@ func (list *ImageList) GetImageByAlias(alias string) *Image {
 	return nil
 }
 
-func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor), selection *Selection) error {
-	if img, ok := image.Image.(SetColor); ok {
-		for height := 0; height < image.Image.Bounds().Max.Y; height++ {
-			for width := 0; width < image.Image.Bounds().Max.X; width++ {
+func (imgStruct *Image) IterateOverPixels(paint func(width, height int, img SetColor), selection *Selection) error {
+	if img, ok := imgStruct.Image.(SetColor); ok {
+		for height := 0; height < imgStruct.Image.Bounds().Max.Y; height++ {
+			for width := 0; width < imgStruct.Image.Bounds().Max.X; width++ {
 				if len(selection.Points) > 2 {
 					if selected := selection.CheckIfSelected(Point{width, height}); selected {
 						paint(width, height, img)
@@ -57,7 +57,7 @@ func (image *Image) IterateOverPixels(paint func(width, height int, img SetColor
 		}
 		return nil
 	} else {
-		return errors.New("image unchangeable")
+		return errors.New("imgStruct unchangeable")
 	}
 }
 

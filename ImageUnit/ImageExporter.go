@@ -30,12 +30,12 @@ func (list *ImageList) ExportImage(flags Flags.Flags) error {
 	return nil
 }
 
-func (image *Image) EncodeImage(file *os.File) error {
+func (imgStruct *Image) EncodeImage(file *os.File) error {
 	switch strings.Split(file.Name(), ".")[1] {
 	case "png":
-		return png.Encode(file, image.Image)
+		return png.Encode(file, imgStruct.Image)
 	case "jpg":
-		return jpeg.Encode(file, image.Image, nil)
+		return jpeg.Encode(file, imgStruct.Image, nil)
 	default:
 		return errors.New("file type not supported")
 	}

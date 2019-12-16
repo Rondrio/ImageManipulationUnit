@@ -36,20 +36,20 @@ func (list *ImageList) MirrorImage(flags Flags.Flags) error {
 	return nil
 }
 
-func (image *Image) Mirror(horizontal, vertical bool) error {
-	buffer := make([][]color.Color, image.Image.Bounds().Max.Y+1)
+func (imgStruct *Image) Mirror(horizontal, vertical bool) error {
+	buffer := make([][]color.Color, imgStruct.Image.Bounds().Max.Y+1)
 	for row := range buffer {
-		buffer[row] = make([]color.Color, image.Image.Bounds().Max.X+1)
+		buffer[row] = make([]color.Color, imgStruct.Image.Bounds().Max.X+1)
 	}
 
 	if horizontal {
-		buffer = MirrorHorizontal(image, buffer)
+		buffer = MirrorHorizontal(imgStruct, buffer)
 	}
 	if vertical {
-		buffer = MirrorVertical(image, buffer)
+		buffer = MirrorVertical(imgStruct, buffer)
 	}
 
-	if img, ok := image.Image.(SetColor); ok {
+	if img, ok := imgStruct.Image.(SetColor); ok {
 		for height := 0; height < len(buffer); height++ {
 			for width := 0; width < len(buffer[height]); width++ {
 				img.Set(width, height, buffer[height][width])
@@ -57,7 +57,7 @@ func (image *Image) Mirror(horizontal, vertical bool) error {
 		}
 		return nil
 	} else {
-		return errors.New("image unchangeable")
+		return errors.New("imgStruct unchangeable")
 	}
 }
 func MirrorHorizontal(image *Image, buffer [][]color.Color) [][]color.Color {

@@ -2,7 +2,6 @@ package Functions
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
-	"ImageManipulationUnit/ImageUnit"
 	"strings"
 )
 
@@ -28,7 +27,7 @@ func (List *FunctionList) GetFunctionByKeyWord(keyWord string) (*Function, error
 	return function, nil
 }
 
-func (function *Function) ExecuteFunction(list *ImageUnit.ImageList, selection *ImageUnit.Selection, functions *FunctionList, flags Flags.Flags) ([]string, error) {
+func (function *Function) ExecuteFunction(flags Flags.Flags) ([]string, error) {
 
 	functionFlags := make(map[string]string)
 
