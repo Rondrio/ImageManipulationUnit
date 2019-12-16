@@ -2,11 +2,12 @@ package ImageUnit
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/ImageUnit"
 	"image/color"
 	"strconv"
 )
 
-func (list *ImageList) SetColor(flags Flags.Flags, selection *Selection) error {
+func (list *ImageUnit.ImageList) SetColor(flags Flags.Flags, selection *ImageUnit.Selection) error {
 	var alias string
 	var red, green, blue, alpha int
 	var err error
@@ -48,15 +49,15 @@ func (list *ImageList) SetColor(flags Flags.Flags, selection *Selection) error {
 	return nil
 
 }
-func (image *Image) SetColor(r, g, b, a uint32, selection *Selection) error {
-	paint := func(width, height int, img SetColor) {
+func (image *ImageUnit.Image) SetColor(r, g, b, a uint32, selection *ImageUnit.Selection) error {
+	paint := func(width, height int, img ImageUnit.SetColor) {
 		c := color.Color(color.RGBA64{
 			R: uint16(r),
 			G: uint16(g),
 			B: uint16(b),
 			A: uint16(a),
 		})
-		img.Set(width, height, c)
+		ImageUnit.Set(width, height, c)
 	}
 	return image.IterateOverPixels(paint, selection)
 }

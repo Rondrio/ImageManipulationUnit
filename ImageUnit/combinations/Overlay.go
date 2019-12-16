@@ -2,12 +2,13 @@ package ImageUnit
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/ImageUnit"
 	"fmt"
 	"image"
 	"image/color"
 )
 
-func (list *ImageList) Overlay(flags Flags.Flags) error {
+func (list *ImageUnit.ImageList) Overlay(flags Flags.Flags) error {
 	if !flags.CheckIfFlagsAreSet("alias1", "alias2") {
 		return Flags.ErrUnsetFlags
 	}
@@ -20,7 +21,7 @@ func (list *ImageList) Overlay(flags Flags.Flags) error {
 	if err != nil {
 		return err
 	}
-	list.LoadedImages = append(list.LoadedImages, Image{
+	list.LoadedImages = append(list.LoadedImages, ImageUnit.Image{
 		Id:    0,
 		Alias: "overlaid",
 		Path:  "",
@@ -31,7 +32,7 @@ func (list *ImageList) Overlay(flags Flags.Flags) error {
 	return nil
 }
 
-func (image1 *Image) OverlayImages(image2 *Image) (image.Image, error) {
+func (image1 *ImageUnit.Image) OverlayImages(image2 *ImageUnit.Image) (image.Image, error) {
 	maxX := image1.Image.Bounds().Max.X
 	if image2.Image.Bounds().Max.X > image1.Image.Bounds().Max.X {
 		maxX = image2.Image.Bounds().Max.X
@@ -43,7 +44,7 @@ func (image1 *Image) OverlayImages(image2 *Image) (image.Image, error) {
 	rect := image.Rect(0, 0, maxX, maxY)
 	result := image.NewRGBA64(rect)
 
-	paint := func(height, width int, img SetColor) {
+	paint := func(height, width int, img ImageUnit.SetColor) {
 		color1 := image1.Image.At(width, height)
 		color2 := image2.Image.At(width, height)
 

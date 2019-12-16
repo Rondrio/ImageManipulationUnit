@@ -2,10 +2,11 @@ package ImageUnit
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/ImageUnit"
 	"image/color"
 )
 
-func (list *ImageList) Invert(flags Flags.Flags, selection *Selection) error {
+func (list *ImageUnit.ImageList) Invert(flags Flags.Flags, selection *ImageUnit.Selection) error {
 	if !flags.CheckIfFlagsAreSet("alias") {
 		return Flags.ErrUnsetFlags
 	}
@@ -17,8 +18,8 @@ func (list *ImageList) Invert(flags Flags.Flags, selection *Selection) error {
 	return nil
 }
 
-func (image *Image) InvertColor(selection *Selection) error {
-	paint := func(width, height int, img SetColor) {
+func (image *ImageUnit.Image) InvertColor(selection *ImageUnit.Selection) error {
+	paint := func(width, height int, img ImageUnit.SetColor) {
 		oldR, oldG, oldB, oldA := image.Image.At(width, height).RGBA()
 		c := color.Color(color.RGBA64{
 			R: getInvertedValue(uint16(oldR)),
@@ -26,11 +27,11 @@ func (image *Image) InvertColor(selection *Selection) error {
 			B: getInvertedValue(uint16(oldB)),
 			A: uint16(oldA),
 		})
-		img.Set(width, height, c)
+		ImageUnit.Set(width, height, c)
 	}
 	return image.IterateOverPixels(paint, selection)
 }
 
 func getInvertedValue(value uint16) uint16 {
-	return max16bit - value
+	return ImageUnit.max16bit - value
 }

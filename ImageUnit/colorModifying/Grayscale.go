@@ -2,10 +2,11 @@ package ImageUnit
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/ImageUnit"
 	"image/color"
 )
 
-func (list *ImageList) Grayscale(flags Flags.Flags, selection *Selection) error {
+func (list *ImageUnit.ImageList) Grayscale(flags Flags.Flags, selection *ImageUnit.Selection) error {
 	if !flags.CheckIfFlagsAreSet("alias") {
 		return Flags.ErrUnsetFlags
 	}
@@ -17,9 +18,9 @@ func (list *ImageList) Grayscale(flags Flags.Flags, selection *Selection) error 
 	return nil
 }
 
-func (image *Image) ChangeToGrayscale(selection *Selection) error {
-	paint := func(width, height int, img SetColor) {
-		img.Set(width, height, color.Gray16Model.Convert(image.Image.At(width, height)))
+func (image *ImageUnit.Image) ChangeToGrayscale(selection *ImageUnit.Selection) error {
+	paint := func(width, height int, img ImageUnit.SetColor) {
+		ImageUnit.Set(width, height, color.Gray16Model.Convert(image.Image.At(width, height)))
 	}
 	return image.IterateOverPixels(paint, selection)
 }
