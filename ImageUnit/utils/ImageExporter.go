@@ -1,4 +1,4 @@
-package ImageUnit
+package utils
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func (list *ImageList) ExportImage(flags Flags.Flags) error {
+func (list ImageList) ExportImage(flags Flags.Flags) error {
 	if !flags.CheckIfFlagsAreSet("output", "alias") {
 		return Flags.ErrUnsetFlags
 	}
@@ -30,7 +30,7 @@ func (list *ImageList) ExportImage(flags Flags.Flags) error {
 	return nil
 }
 
-func (imgStruct *Image) EncodeImage(file *os.File) error {
+func (imgStruct Image) EncodeImage(file *os.File) error {
 	switch strings.Split(file.Name(), ".")[1] {
 	case "png":
 		return png.Encode(file, imgStruct.Image)

@@ -3,16 +3,29 @@ package CommandParser
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
 	"ImageManipulationUnit/Functions"
-	"ImageManipulationUnit/ImageUnit"
+	"ImageManipulationUnit/ImageUnit/colorModifiers"
+	"ImageManipulationUnit/ImageUnit/utils"
 	"bufio"
 	"io"
 	"log"
 	"strings"
 )
+type ImageList struct{
+	IL utils.IImageList
+	CML colorModifiers.ColorModifiersList
+	L utils.ImageList
+}
+
+type Selection struct{
+	IS utils.ISelection
+	S utils.Selection
+}
+
+
 
 type Header struct{
-	ImageList *ImageUnit.ImageList
-	Selection *ImageUnit.Selection
+	ImageList ImageList
+	Selection Selection
 	Functions *Functions.FunctionList
 }
 
@@ -31,6 +44,8 @@ func ScanInput(header Header, input io.Reader) {
 
 func ParseCommand(cmd string, header Header) {
 	var flags Flags.Flags
+	var err error
+
 	defer recovery()
 	flags.Flag = make(map[string]string)
 	words := strings.Fields(cmd)
@@ -43,38 +58,39 @@ func ParseCommand(cmd string, header Header) {
 
 	switch keyWord := strings.ToLower(words[0]); keyWord {
 	case "load":
-		if err := header.ImageList.LoadImage(flags); err != nil {
+		if err := header.ImageList.L.LoadImage(flags); err != nil {
 			log.Println(err)
 		}
 	case "export":
-		if err := header.ImageList.ExportImage(flags); err != nil {
+		if err := header.ImageList.L.ExportImage(flags); err != nil {
 			log.Println(err)
 		}
 	case "grayscale":
-		if err := header.ImageList.Grayscale(flags, header.Selection); err != nil {
+		if err := header.ImageList.CML.Grayscale(flags, &header.Selection.S); err != nil {
 			log.Println(err)
 		}
 	case "add":
-		if err := header.ImageList.AddColor(flags, header.Selection); err != nil {
+		if err := header.ImageList.CML.AddColor(flags, &header.Selection.S); err != nil {
 			log.Println(err)
 		}
 	case "invert":
-		if err := header.ImageList.Invert(flags, header.Selection); err != nil {
+		if err := header.ImageList.CML.Invert(flags, &header.Selection.S); err != nil {
 			log.Println(err)
 		}
 	case "set":
-		if err := header.ImageList.SetColor(flags, header.Selection); err != nil {
+		if err := header.ImageList.CML.SetColor(flags, &header.Selection.S); err != nil {
 			log.Println(err)
 		}
-	case "mirror":
+/*	case "mirror":
 		if err := header.ImageList.MirrorImage(flags); err != nil {
 			log.Println(err)
-		}
+		}*/
 	case "select":
-		if err := header.Selection.Select(flags); err != nil {
+		header.Selection.IS,err = header.Selection.IS.Select(flags)
+		if err != nil {
 			log.Println(err)
 		}
-	case "merge":
+/*	case "merge":
 		if err := header.ImageList.Merge(flags); err != nil {
 			log.Println(err)
 		}
@@ -83,11 +99,12 @@ func ParseCommand(cmd string, header Header) {
 			log.Println(err)
 		}
 	case "unload":
-		if err := header.ImageList.Unload(flags); err != nil {
+		header.ImageList,err = header.ImageList.Unload(flags)
+		if err != nil {
 			log.Println(err)
 		}
 	case "unselect":
-		header.Selection.Points = make([]ImageUnit.Point, 0)
+		header.Selection.Points = make([]utils.Point, 0)
 	default:
 		function, err := header.Functions.GetFunctionByKeyWord(keyWord)
 		if err != nil {
@@ -99,7 +116,7 @@ func ParseCommand(cmd string, header Header) {
 		}
 		for _, command := range commands {
 			ParseCommand(command, header)
-		}
+		}*/
 	}
 }
 

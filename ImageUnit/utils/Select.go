@@ -1,4 +1,4 @@
-package ImageUnit
+package utils
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func (selection *Selection) Select(flags Flags.Flags) error {
+func (selection Selection) Select(flags Flags.Flags) (ISelection,error) {
 	var numPoints int
 	for key := range flags.Flag {
 		if strings.Contains(key, "point") {
@@ -20,25 +20,25 @@ func (selection *Selection) Select(flags Flags.Flags) error {
 		index := strings.TrimPrefix(key, "point")
 		i, err := strconv.Atoi(index)
 		if err != nil {
-			return errors.New("point not indexed")
+			return nil,errors.New("point not indexed")
 		}
 		coords := strings.Split(value, "|")
 		xCoord, err := strconv.Atoi(coords[0])
 		if err != nil {
-			return err
+			return nil,err
 		}
 		yCoord, err := strconv.Atoi(coords[1])
 		if err != nil {
-			return err
+			return nil,err
 		}
 		selection.Points[i-1] = Point{xCoord, yCoord}
 	}
 
 	fmt.Println("Currently selected :", selection.Points)
-	return nil
+	return selection,nil
 }
 
-func (selection *Selection) CheckIfSelected(Point Point) bool {
+func (selection Selection) CheckIfSelected(Point Point) bool {
 	poly := append(selection.Points, selection.Points[0])
 	c := false
 	for i := 0; i < len(selection.Points); i++ {

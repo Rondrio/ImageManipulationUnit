@@ -1,4 +1,4 @@
-package ImageUnit
+package utils
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (list *ImageList) LoadImage(flags Flags.Flags) error {
+func (list ImageList) LoadImage(flags Flags.Flags) error {
 	var image Image
 
 	if !flags.CheckIfFlagsAreSet("alias", "path") {
@@ -37,7 +37,6 @@ func (list *ImageList) LoadImage(flags Flags.Flags) error {
 	if err != nil {
 		return err
 	}
-	ImageTunnel = &image
 	list.LoadedImages = append(list.LoadedImages, image)
 	return nil
 }

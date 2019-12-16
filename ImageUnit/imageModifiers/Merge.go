@@ -1,12 +1,13 @@
-package ImageUnit
+package imageModifiers
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/ImageUnit/utils"
 	"fmt"
 	"image"
 )
 
-func (list *ImageList) Merge(flags Flags.Flags) error {
+func (list *ImageUnit.ImageList) Merge(flags Flags.Flags) error {
 	if !flags.CheckIfFlagsAreSet("alias1", "alias2") {
 		return Flags.ErrUnsetFlags
 	}
@@ -15,7 +16,7 @@ func (list *ImageList) Merge(flags Flags.Flags) error {
 	image1 := list.GetImageByAlias(alias1)
 	image2 := list.GetImageByAlias(alias2)
 
-	list.LoadedImages = append(list.LoadedImages, Image{
+	list.LoadedImages = append(list.LoadedImages, utils.Image{
 		Id:    0,
 		Alias: "merged",
 		Path:  "",
@@ -25,7 +26,7 @@ func (list *ImageList) Merge(flags Flags.Flags) error {
 	return nil
 }
 
-func (imgStruct *Image) MergeImages(image2 *Image) image.Image {
+func (imgStruct *ImageUnit.Image) MergeImages(image2 *ImageUnit.Image) image.Image {
 	rect := image.Rect(0, 0, imgStruct.Image.Bounds().Max.X+image2.Image.Bounds().Max.X, imgStruct.Image.Bounds().Max.Y+image2.Image.Bounds().Max.Y)
 	result := image.NewRGBA64(rect)
 	firstImage := true

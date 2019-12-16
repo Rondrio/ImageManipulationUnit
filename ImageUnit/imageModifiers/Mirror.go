@@ -1,13 +1,15 @@
-package ImageUnit
+package imageModifiers
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/ImageUnit"
+	"ImageManipulationUnit/ImageUnit/utils"
 	"errors"
 	"image/color"
 	"strconv"
 )
 
-func (list *ImageList) MirrorImage(flags Flags.Flags) error {
+func (list *ImageUnit.ImageList) MirrorImage(flags Flags.Flags) error {
 	var alias string
 	horizontal, vertical := false, false
 	var err error
@@ -36,7 +38,7 @@ func (list *ImageList) MirrorImage(flags Flags.Flags) error {
 	return nil
 }
 
-func (imgStruct *Image) Mirror(horizontal, vertical bool) error {
+func (imgStruct *ImageUnit.Image) Mirror(horizontal, vertical bool) error {
 	buffer := make([][]color.Color, imgStruct.Image.Bounds().Max.Y+1)
 	for row := range buffer {
 		buffer[row] = make([]color.Color, imgStruct.Image.Bounds().Max.X+1)
@@ -49,10 +51,10 @@ func (imgStruct *Image) Mirror(horizontal, vertical bool) error {
 		buffer = MirrorVertical(imgStruct, buffer)
 	}
 
-	if img, ok := imgStruct.Image.(SetColor); ok {
+	if img, ok := imgStruct.Image.(utils.SetColor); ok {
 		for height := 0; height < len(buffer); height++ {
 			for width := 0; width < len(buffer[height]); width++ {
-				img.Set(width, height, buffer[height][width])
+				ImageUnit.Set(width, height, buffer[height][width])
 			}
 		}
 		return nil
@@ -60,7 +62,7 @@ func (imgStruct *Image) Mirror(horizontal, vertical bool) error {
 		return errors.New("imgStruct unchangeable")
 	}
 }
-func MirrorHorizontal(image *Image, buffer [][]color.Color) [][]color.Color {
+func MirrorHorizontal(image *ImageUnit.Image, buffer [][]color.Color) [][]color.Color {
 	for height := 0; height < image.Image.Bounds().Max.Y; height++ {
 		for width := 0; width < image.Image.Bounds().Max.X; width++ {
 			buffer[height][image.Image.Bounds().Max.X-1-width] = image.Image.At(width, height)
@@ -68,7 +70,7 @@ func MirrorHorizontal(image *Image, buffer [][]color.Color) [][]color.Color {
 	}
 	return buffer
 }
-func MirrorVertical(image *Image, buffer [][]color.Color) [][]color.Color {
+func MirrorVertical(image *ImageUnit.Image, buffer [][]color.Color) [][]color.Color {
 	for height := 0; height < image.Image.Bounds().Max.Y; height++ {
 		for width := 0; width < image.Image.Bounds().Max.X; width++ {
 			buffer[image.Image.Bounds().Max.Y-1-height][width] = image.Image.At(width, height)
