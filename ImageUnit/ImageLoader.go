@@ -38,8 +38,9 @@ func (list *ImageList) LoadImage(flags Flags.Flags) error {
 		return err
 	}
 	ImageTunnel = &image
+	go DrawGUI(ImageTunnel)
 	list.LoadedImages = append(list.LoadedImages, image)
-	go StartGUI(list.GetImageByAlias(alias))
+	//go StartGUI(list.GetImageByAlias(alias))
 	return nil
 }
 

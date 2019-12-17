@@ -1,67 +1,66 @@
 package ImageUnit
 
 import (
-	"ImageManipulationUnit/CommandParser/Flags"
-	"log"
-	"strconv"
-
-	"golang.org/x/exp/shiny/unit"
-	"golang.org/x/exp/shiny/widget/theme"
-
-	"golang.org/x/exp/shiny/widget/node"
-
+	//"fmt"
 	"golang.org/x/exp/shiny/driver"
 	"golang.org/x/exp/shiny/screen"
-	"golang.org/x/exp/shiny/widget"
+	"golang.org/x/mobile/event/lifecycle"
+	"golang.org/x/mobile/event/paint"
+	"image"
+	"log"
 )
+var Win screen.Window
 
-func stretch(n node.Node, alongWeight int) node.Node {
-	return widget.WithLayoutData(n, widget.FlowLayoutData{
-		AlongWeight:  alongWeight,
-		ExpandAlong:  true,
-		ShrinkAlong:  true,
-		ExpandAcross: true,
-		ShrinkAcross: true,
-	})
-}
+func DrawGUI(img *Image) {
+	var err error
+	driver.Main(func(s screen.Screen) {
+		Win, err = s.NewWindow(&screen.NewWindowOptions{
+			Title: "MemeMaker3000",
+			Width: img.Image.Bounds().Max.X,
+			Height: img.Image.Bounds().Max.Y,
+		})
 
-func StartGUI(img *Image) {
-	go driver.Main(func(s screen.Screen) {
-		w := UpdateImage(img)
-		if err := widget.RunWindow(s, w, &widget.RunWindowOptions{
-			NewWindowOptions: screen.NewWindowOptions{
-				Height: img.Image.Bounds().Max.Y + 35,
-				Width:  img.Image.Bounds().Max.X,
-				Title:  "MemeMaker3000",
-			},
-		}); err != nil {
-			log.Panic(err)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer Win.Release()
+
+		imgText, err := s.NewTexture(image.Point{X: img.Image.Bounds().Max.X, Y: img.Image.Bounds().Max.Y})
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer imgText.Release()
+		c, err := s.NewBuffer(image.Point{X: img.Image.Bounds().Max.X, Y: img.Image.Bounds().Max.Y})
+		imgText.Upload(image.Point{}, c, img.Image.Bounds())
+		for {
+			e := Win.NextEvent()
+
+			switch e := e.(type) {
+
+			case lifecycle.Event:
+				if e.To == lifecycle.StageDead {
+					return
+				}
+
+			case paint.Event:
+				if e.External{
+					break
+				}
+
+				for height := 0; height < img.Image.Bounds().Max.Y; height++ {
+					for width := 0; width < img.Image.Bounds().Max.X; width++ {
+						imgText.Fill(image.Rect(width-1, height-1, width+1, height+1), img.Image.At(width, height), screen.Src)
+					}
+				}
+
+				Win.Copy(image.Point{0, 0}, imgText, imgText.Bounds(), screen.Src, nil)
+				Win.Publish()
+				Win.SendFirst(paint.Event{})
+
+
+			case error:
+				log.Print(e)
+			}
 		}
 	})
-}
-
-func ShowImage(flags Flags.Flags, list *ImageList) {
-	var alias string
-	if set := flags.CheckIfFlagsAreSet("alias"); set {
-		alias = flags.Flag["alias"]
-	}
-	UpdateImage(list.GetImageByAlias(alias))
-}
-
-func UpdateImage(img *Image) *widget.Flow {
-	header := widget.NewUniform(theme.Light,
-		widget.NewPadder(widget.AxisVertical, unit.Ems(0.5),
-			widget.NewFlow(widget.AxisHorizontal,
-				widget.NewLabel("Alias : "+img.Alias),
-				stretch(widget.NewSpace(), 1),
-				widget.NewLabel("Size : "+strconv.Itoa(img.Image.Bounds().Max.X)+" x "+strconv.Itoa(img.Image.Bounds().Max.Y)),
-			),
-		),
-	)
-	body := widget.NewImage(img.Image, img.Image.Bounds())
-
-	return widget.NewFlow(widget.AxisVertical,
-		stretch(widget.NewSheet(header), 1),
-		stretch(widget.NewSheet(body), 2),
-	)
 }
