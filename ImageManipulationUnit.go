@@ -2,16 +2,18 @@ package main
 
 import (
 	"ImageManipulationUnit/CommandParser"
+	"ImageManipulationUnit/Functions"
 	"ImageManipulationUnit/ImageUnit"
-	"time"
+	"os"
 )
 
 func main() {
 	var ImageList ImageUnit.ImageList
-	ImageList.LoadedImages = make([]ImageUnit.Image, 0)
+	var SelectionList ImageUnit.Selection
+	var FunctionList Functions.FunctionList
 
-	go CommandParser.ScanCommandLine(&ImageList)
-	for {
-		time.Sleep(1 * time.Second)
-	}
+	ImageList.LoadedImages = make([]ImageUnit.Image, 0)
+	FunctionList.List = make([]Functions.Function, 0)
+
+	CommandParser.ScanInput(&ImageList, &SelectionList, &FunctionList, os.Stdin)
 }

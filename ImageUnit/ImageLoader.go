@@ -12,15 +12,12 @@ import (
 
 func (list *ImageList) LoadImage(flags Flags.Flags) error {
 	var image Image
-	var err error
-	var alias, path string
 
-	if flags.CheckIfFlagsAreSet("alias", "path") {
-		alias = flags.Flag["alias"]
-		path = flags.Flag["path"]
-	} else {
-		return errors.New("unset flags")
+	if !flags.CheckIfFlagsAreSet("alias", "path") {
+		return Flags.ErrUnsetFlags
 	}
+	alias := flags.Flag["alias"]
+	path := flags.Flag["path"]
 
 	aliasCheck := list.GetImageByAlias(alias)
 	if aliasCheck != nil {
@@ -40,8 +37,10 @@ func (list *ImageList) LoadImage(flags Flags.Flags) error {
 	if err != nil {
 		return err
 	}
-
+	ImageTunnel = &image
+	go DrawGUI(ImageTunnel)
 	list.LoadedImages = append(list.LoadedImages, image)
+	//go StartGUI(list.GetImageByAlias(alias))
 	return nil
 }
 

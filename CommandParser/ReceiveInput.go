@@ -2,27 +2,30 @@ package CommandParser
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
+	"ImageManipulationUnit/Functions"
 	"ImageManipulationUnit/ImageUnit"
 	"bufio"
+	"io"
 	"log"
-	"os"
 	"strings"
 )
 
-func ScanCommandLine(list *ImageUnit.ImageList) {
-	reader := bufio.NewReader(os.Stdin)
+func ScanInput(list *ImageUnit.ImageList, selection *ImageUnit.Selection, functions *Functions.FunctionList, input io.Reader) {
+
+	reader := bufio.NewReader(input)
 	for {
 		cmd, err := reader.ReadString('\n')
 		if err != nil {
 			log.Println(err)
 		}
 		cmd = strings.Replace(cmd, "\r\n", "", -1)
-		ParseCommand(cmd, list)
+		ParseCommand(cmd, list, selection, functions)
 	}
 }
 
-func ParseCommand(cmd string, list *ImageUnit.ImageList) {
+func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Selection, functions *Functions.FunctionList) {
 	var flags Flags.Flags
+	defer recovery()
 	flags.Flag = make(map[string]string)
 	words := strings.Fields(cmd)
 	for _, word := range words {
@@ -32,42 +35,70 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList) {
 		}
 	}
 
-	switch strings.ToLower(words[0]) {
+	switch keyWord := strings.ToLower(words[0]); keyWord {
 	case "load":
-		err := list.LoadImage(flags)
-		if err != nil {
+		if err := list.LoadImage(flags); err != nil {
 			log.Println(err)
 		}
 	case "export":
-		err := list.ExportImage(flags)
-		if err != nil {
+		if err := list.ExportImage(flags); err != nil {
 			log.Println(err)
 		}
 	case "grayscale":
-		err := list.Grayscale(flags)
-		if err != nil {
+		if err := list.Grayscale(flags, selection); err != nil {
 			log.Println(err)
 		}
 	case "add":
-		err := list.AddColor(flags)
-		if err != nil {
+		if err := list.AddColor(flags, selection); err != nil {
 			log.Println(err)
 		}
 	case "invert":
-		err := list.Invert(flags)
-		if err != nil {
+		if err := list.Invert(flags, selection); err != nil {
 			log.Println(err)
 		}
 	case "set":
-		err := list.SetColor(flags)
-		if err != nil {
+		if err := list.SetColor(flags, selection); err != nil {
+			log.Println(err)
+		}
+	case "mirror":
+		if err := list.MirrorImage(flags); err != nil {
 			log.Println(err)
 		}
 	case "select":
-		err := list.SetColor(flags)
+		if err := selection.Select(flags); err != nil {
+			log.Println(err)
+		}
+	case "merge":
+		if err := list.Merge(flags); err != nil {
+			log.Println(err)
+		}
+	case "overlay":
+		if err := list.Overlay(flags); err != nil {
+			log.Println(err)
+		}
+	case "unload":
+		if err := list.Unload(flags); err != nil {
+			log.Println(err)
+		}
+	case "unselect":
+		selection.Points = make([]ImageUnit.Point, 0)
+	default:
+		function, err := functions.GetFunctionByKeyWord(keyWord)
 		if err != nil {
-			return err
+			log.Println(err)
+		}
+		commands, err := function.ExecuteFunction(list, selection, functions, flags)
+		if err != nil {
+			log.Println(err)
+		}
+		for _, command := range commands {
+			ParseCommand(command, list, selection, functions)
 		}
 	}
+}
 
+func recovery() {
+	if err := recover(); err != nil {
+		log.Println("error with flags", err)
+	}
 }

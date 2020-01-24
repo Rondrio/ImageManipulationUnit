@@ -2,23 +2,22 @@ package ImageUnit
 
 import (
 	"ImageManipulationUnit/CommandParser/Flags"
-	"errors"
 	"image/color"
 )
 
-func (list *ImageList) Invert(flags Flags.Flags) error {
-	var alias string
-	if flags.CheckIfFlagsAreSet("alias") {
-		alias = flags.Flag["alias"]
-	} else {
-		return errors.New("unset flags")
+func (list *ImageList) Invert(flags Flags.Flags, selection *Selection) error {
+	if !flags.CheckIfFlagsAreSet("alias") {
+		return Flags.ErrUnsetFlags
 	}
+	alias := flags.Flag["alias"]
 	image := list.GetImageByAlias(alias)
-	image.InvertColor()
+	if err := image.InvertColor(selection); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (image *Image) InvertColor() {
+func (image *Image) InvertColor(selection *Selection) error {
 	paint := func(width, height int, img SetColor) {
 		oldR, oldG, oldB, oldA := image.Image.At(width, height).RGBA()
 		c := color.Color(color.RGBA64{
@@ -29,8 +28,9 @@ func (image *Image) InvertColor() {
 		})
 		img.Set(width, height, c)
 	}
-	image.IterateOverPixels(paint)
+	return image.IterateOverPixels(paint, selection)
 }
+
 func getInvertedValue(value uint16) uint16 {
-	return 65535 - value
+	return max16bit - value
 }

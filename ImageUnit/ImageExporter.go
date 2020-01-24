@@ -10,13 +10,11 @@ import (
 )
 
 func (list *ImageList) ExportImage(flags Flags.Flags) error {
-	var output, alias string
-	if flags.CheckIfFlagsAreSet("output", "alias") {
-		alias = flags.Flag["alias"]
-		output = flags.Flag["output"]
-	} else {
-		return errors.New("unset flags")
+	if !flags.CheckIfFlagsAreSet("output", "alias") {
+		return Flags.ErrUnsetFlags
 	}
+	output := flags.Flag["output"]
+	alias := flags.Flag["alias"]
 
 	image := list.GetImageByAlias(alias)
 
@@ -26,8 +24,7 @@ func (list *ImageList) ExportImage(flags Flags.Flags) error {
 	}
 	defer file.Close()
 
-	err = image.EncodeImage(file)
-	if err != nil {
+	if err = image.EncodeImage(file); err != nil {
 		return err
 	}
 	return nil
