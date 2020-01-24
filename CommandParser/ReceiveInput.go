@@ -97,7 +97,6 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 	}
 }
 
-
 func recovery() {
 	if err := recover(); err != nil {
 		log.Println("error with flags", err)

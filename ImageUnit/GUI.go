@@ -9,14 +9,15 @@ import (
 	"image"
 	"log"
 )
+
 var Win screen.Window
 
 func DrawGUI(img *Image) {
 	var err error
 	driver.Main(func(s screen.Screen) {
 		Win, err = s.NewWindow(&screen.NewWindowOptions{
-			Title: "MemeMaker3000",
-			Width: img.Image.Bounds().Max.X,
+			Title:  "MemeMaker3000",
+			Width:  img.Image.Bounds().Max.X,
 			Height: img.Image.Bounds().Max.Y,
 		})
 
@@ -43,20 +44,19 @@ func DrawGUI(img *Image) {
 				}
 
 			case paint.Event:
-				if e.External{
+				if e.External {
 					break
 				}
 
-				for height := 0; height < img.Image.Bounds().Max.Y; height++ {
-					for width := 0; width < img.Image.Bounds().Max.X; width++ {
+				for height := 0; height <= img.Image.Bounds().Max.Y; height++ {
+					for width := 0; width <= img.Image.Bounds().Max.X; width++ {
 						imgText.Fill(image.Rect(width-1, height-1, width+1, height+1), img.Image.At(width, height), screen.Src)
 					}
 				}
 
 				Win.Copy(image.Point{0, 0}, imgText, imgText.Bounds(), screen.Src, nil)
 				Win.Publish()
-				Win.SendFirst(paint.Event{})
-
+				//Win.SendFirst(paint.Event{})
 
 			case error:
 				log.Print(e)
