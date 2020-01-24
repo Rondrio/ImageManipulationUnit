@@ -95,7 +95,6 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 			ParseCommand(command, list, selection, functions)
 		}
 	}
-	ImageUnit.ShowImage(flags, list)
 }
 
 func recovery() {
