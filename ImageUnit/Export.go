@@ -18,15 +18,15 @@ func (cmd ExportCommand) GetKeyword() string {
 }
 
 func (cmd ExportCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
-	if !flags.CheckIfFlagsAreSet("output", "alias") {
+	if !flags.CheckIfFlagsAreSet("path", "alias") {
 		return Flags.ErrUnsetFlags
 	}
-	output := flags.Flag["output"]
+	output := flags.Flag["path"]
 	alias := flags.Flag["alias"]
 
 	image := list.GetImageByAlias(alias)
 
-	file, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, 0777)
+	file, err := os.OpenFile(output, os.O_CREATE|os.O_RDWR, 0777)
 	if err != nil {
 		return err
 	}

@@ -4,21 +4,22 @@ import (
 	"ImageManipulationUnit/CommandParser/Flags"
 	"errors"
 	"image"
+	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"os"
 	"strings"
 )
 
-type LoadImageCommand struct {
+type LoadCommand struct {
 	Keyword string
 }
 
-func (cmd LoadImageCommand) GetKeyword() string {
+func (cmd LoadCommand) GetKeyword() string {
 	return cmd.Keyword
 }
 
-func (cmd LoadImageCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
+func (cmd LoadCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	var image Image
 
 	if !flags.CheckIfFlagsAreSet("alias", "path") {
@@ -58,6 +59,8 @@ func DecodeFile(file *os.File) (image.Image, error) {
 		return png.Decode(file)
 	case "jpg":
 		return jpeg.Decode(file)
+	case "gif":
+		return gif.Decode(file)
 	default:
 		return nil, errors.New("file type not supported")
 	}

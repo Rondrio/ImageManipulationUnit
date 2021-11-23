@@ -22,7 +22,7 @@ func main() {
 
 func GetCommandList() []ImageUnit.Command {
 	return []ImageUnit.Command{
-		ImageUnit.LoadImageCommand{Keyword: "load"},
+		ImageUnit.LoadCommand{Keyword: "load"},
 		ImageUnit.ExportCommand{Keyword: "export"},
 		ImageUnit.UnloadCommand{Keyword: "unload"},
 		ImageUnit.InvertCommand{Keyword: "invert"},
