@@ -43,19 +43,6 @@ func ParseCommand(cmd string, list *ImageUnit.ImageList, selection *ImageUnit.Se
 	}
 
 	switch keyword := strings.ToLower(words[0]); keyword {
-	case "select":
-		if err := selection.Select(flags); err != nil {
-			log.Println(err)
-		}
-		return
-	case "unload":
-		if err := list.Unload(flags); err != nil {
-			log.Println(err)
-		}
-		return
-	case "unselect":
-		selection.Points = make([]ImageUnit.Point, 0)
-		return
 	default:
 		function, err := functions.GetFunctionByKeyWord(keyword)
 		if err != nil {

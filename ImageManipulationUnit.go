@@ -24,12 +24,15 @@ func GetCommandList() []ImageUnit.Command {
 	return []ImageUnit.Command{
 		ImageUnit.LoadImageCommand{Keyword: "load"},
 		ImageUnit.ExportCommand{Keyword: "export"},
+		ImageUnit.UnloadCommand{Keyword: "unload"},
 		ImageUnit.InvertCommand{Keyword: "invert"},
 		ImageUnit.GrayscaleCommand{Keyword: "grayscale"},
 		ImageUnit.OverlayCommand{Keyword: "overlay"},
 		ImageUnit.MergeCommand{Keyword: "merge"},
 		ImageUnit.AddColorCommand{Keyword: "addcolor"},
 		ImageUnit.MirrorCommand{Keyword: "mirror"},
-		ImageUnit.SetColorCommand{Keyword: "Setcolor"},
+		ImageUnit.SetColorCommand{Keyword: "setcolor"},
+		ImageUnit.SelectCommand{Keyword: "select"},
+		ImageUnit.UnselectCommand{Keyword: "unselect"},
 	}
 }
