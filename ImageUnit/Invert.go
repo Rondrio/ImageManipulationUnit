@@ -5,7 +5,15 @@ import (
 	"image/color"
 )
 
-func (list *ImageList) Invert(flags Flags.Flags, selection *Selection) error {
+type InvertCommand struct {
+	Keyword string
+}
+
+func (cmd InvertCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd InvertCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	if !flags.CheckIfFlagsAreSet("alias") {
 		return Flags.ErrUnsetFlags
 	}

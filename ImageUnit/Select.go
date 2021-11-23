@@ -8,6 +8,14 @@ import (
 	"strings"
 )
 
+type SelectCommand struct {
+	Keyword string
+}
+
+func (cmd SelectCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
 func (selection *Selection) Select(flags Flags.Flags) error {
 	var numPoints int
 	for key := range flags.Flag {

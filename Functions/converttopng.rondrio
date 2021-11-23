@@ -1,7 +1,7 @@
 Args :
--input
--output
+--input
+--output
 Methods :
-load -path=$input -alias=somePrivateVar
-export -output=$output -alias=somePrivateVar
-unload -alias=somePrivateVar
+load --path=$input --alias=somePrivateVar
+export --output=$output --alias=somePrivateVar
+unload --alias=somePrivateVar

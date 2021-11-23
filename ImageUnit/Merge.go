@@ -6,7 +6,15 @@ import (
 	"image"
 )
 
-func (list *ImageList) Merge(flags Flags.Flags) error {
+type MergeCommand struct {
+	Keyword string
+}
+
+func (cmd MergeCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd MergeCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	if !flags.CheckIfFlagsAreSet("alias1", "alias2") {
 		return Flags.ErrUnsetFlags
 	}

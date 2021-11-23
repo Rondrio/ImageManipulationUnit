@@ -29,7 +29,7 @@ func ParseFunctionFile(file *os.File, keyWord string) (*Function, error) {
 
 		switch DataType {
 		case "Args":
-			function.Args = append(function.Args, strings.TrimPrefix(line, "-"))
+			function.Args = append(function.Args, strings.TrimPrefix(line, "--"))
 
 		case "Methods":
 			function.Commands = append(function.Commands, line)

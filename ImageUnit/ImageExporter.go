@@ -9,7 +9,15 @@ import (
 	"strings"
 )
 
-func (list *ImageList) ExportImage(flags Flags.Flags) error {
+type ExportCommand struct {
+	Keyword string
+}
+
+func (cmd ExportCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd ExportCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	if !flags.CheckIfFlagsAreSet("output", "alias") {
 		return Flags.ErrUnsetFlags
 	}

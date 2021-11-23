@@ -15,5 +15,21 @@ func main() {
 	ImageList.LoadedImages = make([]ImageUnit.Image, 0)
 	FunctionList.List = make([]Functions.Function, 0)
 
-	CommandParser.ScanInput(&ImageList, &SelectionList, &FunctionList, os.Stdin)
+	commands := ImageUnit.CommandList(GetCommandList())
+
+	CommandParser.ScanInput(&ImageList, &SelectionList, &FunctionList, &commands, os.Stdin)
+}
+
+func GetCommandList() []ImageUnit.Command {
+	return []ImageUnit.Command{
+		ImageUnit.LoadImageCommand{Keyword: "load"},
+		ImageUnit.ExportCommand{Keyword: "export"},
+		ImageUnit.InvertCommand{Keyword: "invert"},
+		ImageUnit.GrayscaleCommand{Keyword: "grayscale"},
+		ImageUnit.OverlayCommand{Keyword: "overlay"},
+		ImageUnit.MergeCommand{Keyword: "merge"},
+		ImageUnit.AddColorCommand{Keyword: "addcolor"},
+		ImageUnit.MirrorCommand{Keyword: "mirror"},
+		ImageUnit.SetColorCommand{Keyword: "Setcolor"},
+	}
 }

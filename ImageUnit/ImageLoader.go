@@ -10,7 +10,15 @@ import (
 	"strings"
 )
 
-func (list *ImageList) LoadImage(flags Flags.Flags) error {
+type LoadImageCommand struct {
+	Keyword string
+}
+
+func (cmd LoadImageCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd LoadImageCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	var image Image
 
 	if !flags.CheckIfFlagsAreSet("alias", "path") {

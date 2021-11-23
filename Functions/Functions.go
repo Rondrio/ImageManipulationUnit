@@ -51,7 +51,7 @@ func parseCommandsWithVars(command string, args map[string]string) string {
 	var result string
 	words := strings.Fields(command)
 	for _, word := range words {
-		if !strings.HasPrefix(word, "-") {
+		if !strings.HasPrefix(word, "--") {
 			result += word + " "
 			continue
 		}

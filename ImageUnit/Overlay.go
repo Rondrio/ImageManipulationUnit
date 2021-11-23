@@ -7,7 +7,15 @@ import (
 	"image/color"
 )
 
-func (list *ImageList) Overlay(flags Flags.Flags) error {
+type OverlayCommand struct {
+	Keyword string
+}
+
+func (cmd OverlayCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd OverlayCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	if !flags.CheckIfFlagsAreSet("alias1", "alias2") {
 		return Flags.ErrUnsetFlags
 	}

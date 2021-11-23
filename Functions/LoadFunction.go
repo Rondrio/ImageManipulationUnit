@@ -18,7 +18,7 @@ func (List *FunctionList) CheckForFunctionFile(keyWord string) (*Function, error
 			if err != nil {
 				return nil, err
 			}
-			file, err := os.Open(currentPath + "\\Functions\\" + info.Name())
+			file, err := os.Open(currentPath + "/Functions/" + info.Name())
 			if err != nil {
 				return nil, err
 			}

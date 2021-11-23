@@ -13,6 +13,13 @@ const (
 
 var ImageTunnel *Image
 
+type Command interface {
+	GetKeyword() string
+	Execute(*ImageList, Flags.Flags, *Selection) error
+}
+
+type CommandList []Command
+
 type Image struct {
 	Id    int64
 	Alias string

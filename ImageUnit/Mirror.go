@@ -7,7 +7,15 @@ import (
 	"strconv"
 )
 
-func (list *ImageList) MirrorImage(flags Flags.Flags) error {
+type MirrorCommand struct {
+	Keyword string
+}
+
+func (cmd MirrorCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd MirrorCommand) Execute(list *ImageList, flags Flags.Flags, seleciton *Selection) error {
 	var alias string
 	horizontal, vertical := false, false
 	var err error

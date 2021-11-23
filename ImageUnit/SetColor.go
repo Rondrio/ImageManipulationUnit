@@ -6,7 +6,15 @@ import (
 	"strconv"
 )
 
-func (list *ImageList) SetColor(flags Flags.Flags, selection *Selection) error {
+type SetColorCommand struct {
+	Keyword string
+}
+
+func (cmd SetColorCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd SetColorCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	var alias string
 	var red, green, blue, alpha int
 	var err error

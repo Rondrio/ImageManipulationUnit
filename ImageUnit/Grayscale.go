@@ -5,7 +5,15 @@ import (
 	"image/color"
 )
 
-func (list *ImageList) Grayscale(flags Flags.Flags, selection *Selection) error {
+type GrayscaleCommand struct {
+	Keyword string
+}
+
+func (cmd GrayscaleCommand) GetKeyword() string {
+	return cmd.Keyword
+}
+
+func (cmd GrayscaleCommand) Execute(list *ImageList, flags Flags.Flags, selection *Selection) error {
 	if !flags.CheckIfFlagsAreSet("alias") {
 		return Flags.ErrUnsetFlags
 	}
