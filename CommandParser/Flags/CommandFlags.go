@@ -1,6 +1,8 @@
 package Flags
 
-import "errors"
+import (
+	"errors"
+)
 
 type Flags struct {
 	Flag map[string]string

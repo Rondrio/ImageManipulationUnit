@@ -17,7 +17,7 @@ func ParseFunctionFile(file *os.File, keyWord string) (*Function, error) {
 	if err != nil {
 		return nil, err
 	}
-	lines := strings.Split(string(fileText), "\r\n")
+	lines := strings.Split(string(fileText), "\n")
 	for _, line := range lines {
 		if line == "Args :" {
 			DataType = "Args"
